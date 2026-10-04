@@ -1,0 +1,20 @@
+[package]
+name = "planner-test-support"
+version = "0.1.0"
+edition = "2024"
+publish = false
+license = "Apache-2.0 OR MIT"
+description = "Deterministic fixtures and egui_kittest harness for planner"
+repository = "https://github.com/hexqnt/planner"
+readme = "../../README.md"
+keywords = ["egui", "testing"]
+categories = ["development-tools::testing"]
+
+[dependencies]
+planner = { workspace = true, features = ["testing"] }
+egui.workspace = true
+egui_kittest.workspace = true
+chrono.workspace = true
+
+[lints]
+workspace = true

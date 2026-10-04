@@ -1,0 +1,22 @@
+[package]
+name = "planner-ui-tests"
+version = "0.1.0"
+edition = "2024"
+publish = false
+license = "Apache-2.0 OR MIT"
+description = "Behavioral UI regression tests for planner"
+repository = "https://github.com/hexqnt/planner"
+readme = "../../README.md"
+keywords = ["egui", "testing"]
+categories = ["development-tools::testing"]
+
+[dev-dependencies]
+planner = { workspace = true, features = ["testing"] }
+planner-test-support.workspace = true
+egui.workspace = true
+egui_kittest.workspace = true
+chrono.workspace = true
+serde_json.workspace = true
+
+[lints]
+workspace = true

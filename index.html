@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8fafd">
+  <title>planner — календарь и планировщик на год онлайн</title>
+  <meta name="description" content="planner — календарь на год для планирования отпусков, поездок и проектов. Производственные календари России, события и локальное сохранение без регистрации.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:site_name" content="planner">
+  <meta property="og:title" content="planner — календарь и планировщик на год онлайн">
+  <meta property="og:description" content="Планируйте отпуска, поездки и проекты на одном календаре. Производственные календари России, события и локальное сохранение без регистрации.">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="planner — календарь и планировщик на год онлайн">
+  <meta name="twitter:description" content="Планируйте отпуска, поездки и проекты на одном календаре. Производственные календари России, события и локальное сохранение без регистрации.">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "planner",
+      "description": "Календарь на год для планирования отпусков, поездок и проектов с производственными календарями России и локальным сохранением без регистрации.",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "Web, Linux, Windows, macOS",
+      "inLanguage": ["ru", "en"],
+      "isAccessibleForFree": true,
+      "license": ["https://opensource.org/license/mit", "https://www.apache.org/licenses/LICENSE-2.0"],
+      "sameAs": "https://github.com/hexqnt/planner"
+    }
+  </script>
+  <link data-trunk rel="rust" data-bin="planner" data-wasm-opt="0">
+  <style>
+    :root { --loader-bg: #f8fafd; --loader-text: #2d3a45; --loader-spinner: #d0d7de; --loader-spinner-top: #4f6f8a; }
+    @media (prefers-color-scheme: dark) {
+      :root { --loader-bg: #12181e; --loader-text: #dce3ea; --loader-spinner: #32404d; --loader-spinner-top: #86b5de; }
+    }
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #f8fafd; }
+    #planner { display: block; width: 100%; height: 100%; touch-action: none; }
+    #loading { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 24px; background: var(--loader-bg); font: 0.95rem system-ui, sans-serif; color: var(--loader-text); text-align: center; }
+    .loader-content { display: flex; flex-direction: column; align-items: center; gap: 0.875rem; }
+    .loader-spinner { width: 2.25rem; height: 2.25rem; border: 0.22rem solid var(--loader-spinner); border-top-color: var(--loader-spinner-top); border-radius: 50%; animation: loader-spin 0.75s linear infinite; }
+    .loader-status { letter-spacing: 0.01em; }
+    @keyframes loader-spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .loader-spinner { animation: none; } }
+    #about { position: fixed; right: 12px; bottom: 12px; max-width: min(36rem, calc(100% - 24px)); box-sizing: border-box; border: 1px solid #c7cfdf; border-radius: 8px; background: #f8fafd; color: #1b2241; font: 14px/1.5 system-ui, sans-serif; }
+    #about summary { padding: 8px 12px; cursor: pointer; }
+    #about article { max-height: 60vh; overflow: auto; padding: 0 16px 16px; }
+    #about h1 { font-size: 1.5rem; }
+    #about h2 { font-size: 1.125rem; }
+    #about a { color: #234e9c; }
+  </style>
+  <noscript><style>#loading { display: none; }</style></noscript>
+</head>
+<body>
+  <canvas id="planner" aria-label="planner — календарь и планировщик на год">Для интерактивного календаря нужен браузер с поддержкой JavaScript, WebAssembly и WebGL.</canvas>
+  <div id="loading" role="status" aria-live="polite">
+    <div class="loader-content">
+      <div class="loader-spinner" aria-hidden="true"></div>
+      <div class="loader-status">Loading planner…</div>
+    </div>
+  </div>
+  <details id="about">
+    <summary>О planner</summary>
+    <article>
+      <h1>planner — календарь и планировщик на год</h1>
+      <p>Планируйте отпуска, поездки, проекты и другие события на уровне дней. Все 12 месяцев представлены в одной адаптивной сетке; можно переключать годы или использовать непрерывный календарь.</p>
+      <h2>События и производственные календари</h2>
+      <p>Добавляйте события на один день или интервал, задавайте время и повторения, объединяйте календари в группы и выбирайте цвета. Производственные календари России и регионов показывают выходные, праздники и сокращённые дни. Если официальных данных нет, подсказки отмечают прогноз.</p>
+      <h2>Без регистрации, с локальным сохранением</h2>
+      <p>События и настройки сохраняются в браузере на этом устройстве. Резервная копия в JSON позволяет сохранить и перенести календарь. Очистка данных сайта удаляет локальные данные; автоматической синхронизации между устройствами нет.</p>
+      <p>Доступны светлая и тёмная темы, русский и английский интерфейс. planner — бесплатное приложение с открытым исходным кодом для браузера, Linux, Windows и macOS.</p>
+      <p><a href="https://github.com/hexqnt/planner">Исходный код, инструкция и десктопная версия planner</a></p>
+      <noscript><p>Для запуска интерактивного календаря включите JavaScript в настройках браузера.</p></noscript>
+    </article>
+  </details>
+</body>
+</html>
