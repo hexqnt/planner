@@ -6,15 +6,30 @@ mod create;
 pub(super) mod rename;
 mod tree;
 
+#[derive(Clone, Copy, Default, PartialEq, Eq)]
+pub(super) enum SidebarTab {
+    #[default]
+    Calendars,
+    Search,
+    Chat,
+}
+
 impl Planner {
     /// Возвращает размещение списка событий в текущем кадре; без списка слева нужна правая панель.
     pub(super) fn sidebar(&mut self, ui: &mut egui::Ui) -> EventListPosition {
         self.sidebar_tabs(ui);
-        if self.search.open {
-            self.search_panel(ui, false);
-            return EventListPosition::Right;
-        }
         let language = self.language();
+        match self.sidebar_tab {
+            SidebarTab::Search => {
+                self.search_panel(ui, false);
+                return EventListPosition::Right;
+            }
+            SidebarTab::Chat => {
+                self.chat.show(ui, language, &mut self.shortcuts);
+                return EventListPosition::Right;
+            }
+            SidebarTab::Calendars => {}
+        }
         // Размещение фиксируется до обработки переноса, чтобы список не рисовался дважды.
         let event_list_position = self.document.event_list_position;
         let create = egui::ScrollArea::vertical()
@@ -69,34 +84,48 @@ impl Planner {
 
     pub(super) fn sidebar_tabs(&mut self, ui: &mut egui::Ui) {
         let language = self.language();
+        let calendars_hint = language.text(
+            "Календари — категории событий. Галочки показывают или скрывают их события на датах.",
+            "Calendars are event categories. Checkboxes show or hide their events on dates.",
+        );
         ui.scope(|ui| {
             ui.spacing_mut().interact_size.y = appearance::control_height(ui);
-            ui.horizontal(|ui| {
-                for (search, icon, label) in [
+            ui.spacing_mut().button_padding.x = config::TAB_BUTTON_PADDING;
+            ui.spacing_mut().item_spacing.x = config::TAB_GAP;
+            ui.horizontal_wrapped(|ui| {
+                for (tab, icon, label) in [
                     (
-                        false,
+                        SidebarTab::Calendars,
                         icons::CALENDAR,
                         language.text("Календари", "Calendars"),
                     ),
-                    (true, icons::SEARCH, language.text("Поиск", "Search")),
+                    (
+                        SidebarTab::Search,
+                        icons::SEARCH,
+                        language.text("Поиск", "Search"),
+                    ),
+                    (
+                        SidebarTab::Chat,
+                        icons::MESSAGE_AI,
+                        language.text("Чат", "Chat"),
+                    ),
                 ] {
                     let image = egui::Image::new(icon)
                         .fit_to_exact_size(egui::Vec2::splat(ui.spacing().icon_width));
                     let response = ui.add(
-                            egui::Button::selectable(self.search.open == search, (image, label))
-                                .stroke(egui::Stroke::NONE)
-                                .image_tint_follows_text_color(true),
-                        );
-                    let response = if search {
-                        response
+                        egui::Button::selectable(self.sidebar_tab == tab, (image, label))
+                            .stroke(egui::Stroke::NONE)
+                            .image_tint_follows_text_color(true),
+                    );
+                    let response = if tab == SidebarTab::Calendars {
+                        widgets::hint(response, calendars_hint)
                     } else {
-                        widgets::hint(response, language.text("Календари — категории событий. Галочки показывают или скрывают их события на датах.", "Calendars are event categories. Checkboxes show or hide their events on dates."))
+                        response
                     };
                     if response.clicked() {
-                        if search {
-                            self.open_search();
-                        } else {
-                            self.search.open = false;
+                        match tab {
+                            SidebarTab::Search => self.open_search(),
+                            SidebarTab::Calendars | SidebarTab::Chat => self.sidebar_tab = tab,
                         }
                     }
                 }

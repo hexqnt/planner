@@ -6,6 +6,7 @@ use planner::testing::{
 };
 use planner_test_support::{AppHarness, document, event, harness, range, state};
 
+mod chat;
 mod dialogs;
 mod events;
 mod grid;
@@ -49,7 +50,11 @@ fn open_tree_menu(harness: &mut AppHarness, name: &str) {
 }
 
 fn field<'a>(harness: &'a AppHarness, label: &'a str) -> Node<'a> {
-    harness.get_by_role_and_label(Role::TextInput, label)
+    harness.get(
+        egui_kittest::kittest::By::new()
+            .label(label)
+            .predicate(|node| matches!(node.role(), Role::TextInput | Role::MultilineTextInput)),
+    )
 }
 
 fn focus_field(harness: &mut AppHarness, label: &str) {

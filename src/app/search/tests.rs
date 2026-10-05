@@ -98,12 +98,12 @@ fn sidebar_tabs_keep_their_positions_during_hover_press_and_selection_changes() 
 
     for language in [Language::Russian, Language::English] {
         for dark in [false, true] {
-            for search_open in [false, true] {
+            for tab in [SidebarTab::Calendars, SidebarTab::Search, SidebarTab::Chat] {
                 let ctx = egui::Context::default();
                 let mut planner = planner(&ctx);
                 planner.document.language = language;
                 appearance::apply_style(&ctx, dark);
-                planner.search.open = search_open;
+                planner.sidebar_tab = tab;
                 let mut render = |events| {
                     let output = ctx.run_ui(
                         egui::RawInput {
@@ -118,6 +118,7 @@ fn sidebar_tabs_keep_their_positions_during_hover_press_and_selection_changes() 
                     let rects = [
                         text_rect(&output, language.text("Календари", "Calendars")),
                         text_rect(&output, language.text("Поиск", "Search")),
+                        text_rect(&output, language.text("Чат", "Chat")),
                     ];
                     output.drop_without_applying_deltas();
                     rects

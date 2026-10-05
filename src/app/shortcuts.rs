@@ -1,6 +1,6 @@
 use egui::{Event, Key, Modifiers};
 
-use super::Planner;
+use super::{Planner, sidebar::SidebarTab};
 
 #[derive(Clone, Copy)]
 pub(super) enum Shortcut {
@@ -11,6 +11,7 @@ pub(super) enum Shortcut {
     NextYear,
     Cancel,
     SaveEvent,
+    SendChat,
 }
 
 /// Повторная компоновка кадра повторяет потребление ввода, но не само действие.
@@ -70,6 +71,7 @@ impl Shortcut {
             Self::NextYear => (Modifiers::NONE, Key::PageDown),
             Self::Cancel => (Modifiers::NONE, Key::Escape),
             Self::SaveEvent => (Modifiers::COMMAND, Key::Enter),
+            Self::SendChat => (Modifiers::NONE, Key::Enter),
         };
         ctx.input_mut(|input| {
             let mut pressed = false;
@@ -121,9 +123,9 @@ impl Planner {
             self.open_search();
             return;
         }
-        if self.search.open {
+        if self.sidebar_tab == SidebarTab::Search {
             if self.shortcuts.consume(Shortcut::Cancel, ctx) {
-                self.search.open = false;
+                self.sidebar_tab = SidebarTab::Calendars;
             }
             return;
         }

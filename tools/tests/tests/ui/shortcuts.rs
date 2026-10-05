@@ -25,7 +25,7 @@ fn repeat_key(harness: &mut AppHarness, key: Key) {
     harness.run();
 }
 
-struct RepeatKeyPass;
+pub struct RepeatKeyPass;
 
 impl egui::Plugin for RepeatKeyPass {
     fn debug_name(&self) -> &'static str {

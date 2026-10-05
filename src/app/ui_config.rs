@@ -267,6 +267,12 @@ pub(super) mod calendar {
 pub(super) mod sidebar {
     use egui::Vec2;
 
+    /// Горизонтальный отступ внутри кнопок вкладок.
+    pub const TAB_BUTTON_PADDING: f32 = 8.0;
+
+    /// Расстояние между вкладками.
+    pub const TAB_GAP: f32 = 4.0;
+
     /// Внутренние отступы кнопок в строках дерева календарей.
     pub const ROW_BUTTON_PADDING: Vec2 = Vec2::new(4.0, 2.0);
 
@@ -293,6 +299,20 @@ pub(super) mod sidebar {
 
     /// Дополнительный отступ названия от флажка видимости.
     pub const CHECKBOX_TEXT_GAP: f32 = 4.0;
+}
+
+pub(super) mod chat {
+    /// Начальная и минимальная высота редактора сообщения.
+    pub const INPUT_DEFAULT_HEIGHT: f32 = 90.0;
+    pub const INPUT_MIN_HEIGHT: f32 = 60.0;
+
+    /// Максимальная доля оставшейся высоты панели, доступная редактору.
+    pub const INPUT_MAX_HEIGHT_FRACTION: f32 = 0.6;
+
+    /// Скругление, внутренний отступ и расстояние между сообщениями.
+    pub const MESSAGE_RADIUS: u8 = 8;
+    pub const MESSAGE_MARGIN: i8 = 12;
+    pub const MESSAGE_GAP: f32 = 12.0;
 }
 
 pub(super) mod backup {

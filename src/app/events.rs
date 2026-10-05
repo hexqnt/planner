@@ -1,6 +1,6 @@
 use crate::model::EventListPosition;
 
-use super::{Planner, widgets};
+use super::{Planner, sidebar::SidebarTab, widgets};
 
 mod list;
 
@@ -12,7 +12,7 @@ impl Planner {
         }
         if position == EventListPosition::Left {
             self.sidebar_visible = true;
-            self.search.open = false;
+            self.sidebar_tab = SidebarTab::Calendars;
         }
     }
 

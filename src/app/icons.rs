@@ -21,6 +21,12 @@ pub(super) const TIMEZONE: ImageSource<'static> = egui::include_image!("../../as
 pub(super) const VACATION: ImageSource<'static> =
     egui::include_image!("../../assets/pig-money.svg");
 pub(super) const SEARCH: ImageSource<'static> = egui::include_image!("../../assets/search.svg");
+pub(super) const MESSAGE_AI: ImageSource<'static> =
+    egui::include_image!("../../assets/message-ai.svg");
+pub(super) const PLAYER_PLAY: ImageSource<'static> =
+    egui::include_image!("../../assets/player-play.svg");
+pub(super) const PLAYER_STOP: ImageSource<'static> =
+    egui::include_image!("../../assets/player-stop.svg");
 pub(super) const INFO: ImageSource<'static> = egui::include_image!("../../assets/info-circle.svg");
 pub(super) const HELP: ImageSource<'static> = egui::include_image!("../../assets/help.svg");
 pub(super) const GITHUB: ImageSource<'static> =
@@ -47,7 +53,8 @@ pub(super) const CALENDAR: ImageSource<'static> = egui::include_image!("../../as
 mod tests {
     use super::{
         CALCULATOR, CALENDAR, FILE_EXPORT, FILE_IMPORT, GITHUB, HELP, INFO, ImageSource, LANGUAGE,
-        MONEYBAG, MONEYBAG_MINUS, MONEYBAG_PLUS, SCALE, SEARCH, SETTINGS, TIMEZONE, VACATION,
+        MESSAGE_AI, MONEYBAG, MONEYBAG_MINUS, MONEYBAG_PLUS, PLAYER_PLAY, PLAYER_STOP, SCALE,
+        SEARCH, SETTINGS, TIMEZONE, VACATION,
     };
 
     #[test]
@@ -68,6 +75,9 @@ mod tests {
             FILE_IMPORT,
             CALENDAR,
             SEARCH,
+            MESSAGE_AI,
+            PLAYER_PLAY,
+            PLAYER_STOP,
             VACATION,
             MONEYBAG_PLUS,
             MONEYBAG_MINUS,

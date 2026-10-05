@@ -2,7 +2,7 @@ use egui::{Color32, Key, Modifiers, TextFormat};
 use unicode_segmentation::UnicodeSegmentation as _;
 
 use super::Planner;
-use crate::app::{icons, ui_config::style, widgets};
+use crate::app::{icons, sidebar::SidebarTab, ui_config::style, widgets};
 use crate::model::{EventId, HighlightField};
 
 #[cfg(test)]
@@ -60,7 +60,7 @@ impl Planner {
                 } else {
                     self.selection.set_range(dates);
                     if overlay {
-                        self.search.open = false;
+                        self.sidebar_tab = SidebarTab::Calendars;
                     } else {
                         self.search.focus = true;
                     }
@@ -68,7 +68,7 @@ impl Planner {
             }
             Some(SearchAction::Edit(event)) => {
                 if overlay {
-                    self.search.open = false;
+                    self.sidebar_tab = SidebarTab::Calendars;
                 }
                 self.edit_event(event);
             }

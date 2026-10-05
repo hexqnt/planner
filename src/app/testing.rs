@@ -82,7 +82,9 @@ impl Planner {
             document: &self.document,
             selection: self.selection.range(),
             calendar: self.continuous.inspect(),
-            search: self.search.inspect(),
+            search: self
+                .search
+                .inspect(self.sidebar_tab == super::SidebarTab::Search),
             event_editor_open: self.event_draft.is_some(),
             event_error: self.event_draft.as_ref().and_then(super::EventDraft::error),
             about_open: self.about_open,

@@ -2,7 +2,7 @@
 
 use chrono::{DateTime, Datelike as _, NaiveDate, NaiveTime, Utc};
 
-use super::{Planner, appearance, dialogs, widgets};
+use super::{Planner, appearance, dialogs, sidebar::SidebarTab, widgets};
 use crate::{
     model::{
         DateRange, DisplayTimeZone, QueryError, SearchFilters, SearchIndex, SearchQuery, Year,
@@ -38,7 +38,6 @@ struct SearchContext {
 }
 
 pub(super) struct Search {
-    pub open: bool,
     focus: bool,
     input: String,
     query: Result<SearchQuery, QueryError>,
@@ -60,9 +59,9 @@ pub(super) struct Search {
 
 #[cfg(feature = "testing")]
 impl Search {
-    pub(super) fn inspect(&self) -> super::testing::SearchState<'_> {
+    pub(super) fn inspect(&self, open: bool) -> super::testing::SearchState<'_> {
         super::testing::SearchState {
-            open: self.open,
+            open,
             query: &self.input,
             selected: self.selected,
             dates: self.filters.dates,
@@ -74,7 +73,6 @@ impl Search {
 impl Default for Search {
     fn default() -> Self {
         Self {
-            open: false,
             focus: false,
             input: String::new(),
             query: Ok(SearchQuery::default()),
@@ -163,7 +161,7 @@ fn parse_time(text: &str) -> Option<NaiveTime> {
 impl Planner {
     pub(super) fn open_search(&mut self) {
         self.sidebar_visible = true;
-        self.search.open = true;
+        self.sidebar_tab = SidebarTab::Search;
         self.search.focus = true;
         self.search.restart();
     }
@@ -179,12 +177,12 @@ impl Planner {
                 if dialogs::Heading::new(language.text("Поиск событий", "Search events"), language)
                     .show(ui)
                 {
-                    self.search.open = false;
+                    self.sidebar_tab = SidebarTab::Calendars;
                 }
                 self.search_panel(ui, true);
             });
         if response.should_close() {
-            self.search.open = false;
+            self.sidebar_tab = SidebarTab::Calendars;
         }
     }
 

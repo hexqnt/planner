@@ -10,12 +10,13 @@ use crate::{
 use dialogs::{EventDraft, TreeDraft};
 use persistence::{LoadedDocument, Persistence};
 use selection::Selection;
-use sidebar::rename::RenameDraft;
+use sidebar::{SidebarTab, rename::RenameDraft};
 use widgets::YearDraft;
 
 use ui_config::style::{BLUE, RED};
 
 mod appearance;
+mod chat;
 mod dialogs;
 mod events;
 mod files;
@@ -57,6 +58,8 @@ pub struct Planner {
     notice: Option<String>,
     persistence: Persistence,
     sidebar_visible: bool,
+    sidebar_tab: SidebarTab,
+    chat: chat::Chat,
     search: search::Search,
     shortcuts: shortcuts::Shortcuts,
     frame_cpu_seconds: Option<f32>,
@@ -129,6 +132,8 @@ impl Planner {
             notice,
             persistence: Persistence::default(),
             sidebar_visible: true,
+            sidebar_tab: SidebarTab::default(),
+            chat: chat::Chat::default(),
             search: search::Search::default(),
             shortcuts: shortcuts::Shortcuts::default(),
             frame_cpu_seconds: None,
@@ -249,6 +254,8 @@ impl Planner {
         self.files = files::FileTransfer::default();
         self.timezone_picker.reset_search();
         self.search = search::Search::default();
+        self.sidebar_tab = SidebarTab::default();
+        self.chat = chat::Chat::default();
         appearance::apply_style(ctx, self.document.dark);
         self.mark_changed();
         ctx.request_repaint();

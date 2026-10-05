@@ -10,6 +10,7 @@ use super::{
     Planner,
     appearance::{self, theme_button},
     grid, icons,
+    sidebar::SidebarTab,
     ui_config::{layout as config, style},
     widgets,
 };
@@ -318,11 +319,12 @@ impl Planner {
         egui::Panel::bottom("footer")
             .frame(appearance::panel_frame(ui, config::FOOTER_MARGIN))
             .show(ui, |ui| self.footer(ui));
-        let search_overlay = self.search.open && ui.available_width() < 1050.0;
+        let search_overlay =
+            self.sidebar_tab == SidebarTab::Search && ui.available_width() < 1050.0;
         let event_list_position = if self.sidebar_visible && !search_overlay {
             // При двух боковых панелях оставляем место календарю и событиям.
             let sidebar_width = if self.document.event_list_position == EventListPosition::Right
-                || self.search.open
+                || self.sidebar_tab != SidebarTab::Calendars
             {
                 config::SIDEBAR_WIDTH.min(ui.available_width().max(0.0) / 3.0)
             } else {
