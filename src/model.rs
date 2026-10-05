@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use crate::text::{Language, Name};
 
 pub use display_timezone::{DisplayTimeZone, RecentTimeZones};
-pub use document::{CalendarViewMode, Document};
+pub use document::{CalendarViewMode, Document, EventListPosition};
 pub use event::{
     Availability, Email, Event, EventDetails, EventIdentity, EventLink, EventSchedule, EventStatus,
     EventTimeZone, EventTimes, EventUid, Frequency, OccurrenceStart, Recurrence, Reminder,

@@ -384,6 +384,7 @@ fn vacation_window_fits_small_screens_in_both_languages_and_themes() {
                 assert!(average.top() > salary.bottom());
                 close_calculation(&mut harness);
                 click(&mut harness, "☰");
+                harness.set_size(egui::vec2(1400.0, 900.0)).run();
                 let first = harness.get_by_label("2026-01-12").rect().center();
                 let last = harness.get_by_label("2026-01-16").rect().center();
                 harness.event(egui::Event::PointerMoved(first));
@@ -410,6 +411,7 @@ fn vacation_window_fits_small_screens_in_both_languages_and_themes() {
                     state(&harness).selection,
                     Some(range("2026-01-12", "2026-01-16"))
                 );
+                harness.set_size(size).run();
                 open_calculation(&mut harness);
                 assert!(
                     bounds.contains_rect(

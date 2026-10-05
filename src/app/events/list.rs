@@ -2,9 +2,7 @@ use std::ops::Range;
 
 use egui::{Rect, TextStyle, Ui, Vec2};
 
-use crate::model::EventId;
-
-use super::super::{Planner, widgets};
+use crate::app::{Planner, widgets};
 
 /// Дополнительная высота строки списка событий поверх текста и стандартных интервалов.
 const EVENT_ROW_EXTRA_HEIGHT: f32 = 5.0;
@@ -55,7 +53,7 @@ impl RowViewport {
 }
 
 impl Planner {
-    pub(super) fn event_list(&mut self, ui: &mut egui::Ui) -> Option<EventId> {
+    pub(super) fn event_list(&mut self, ui: &mut egui::Ui) {
         let language = self.language();
         let range = self
             .selection
@@ -65,7 +63,7 @@ impl Planner {
         let count = rows.len();
         if count == 0 {
             ui.weak(language.text("В этом интервале нет событий.", "No events in this range."));
-            return None;
+            return;
         }
         let viewport = RowViewport::new(ui, count);
         let mut edit = None;
@@ -96,7 +94,9 @@ impl Planner {
                 }
             });
         }
-        edit
+        if let Some(id) = edit {
+            self.edit_event(id);
+        }
     }
 }
 

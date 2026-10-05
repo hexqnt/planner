@@ -1,9 +1,8 @@
 use egui::{Color32, Vec2};
 
 use crate::{
-    app::ui_config::layout::SIDEBAR_WIDTH,
     calendar::Region,
-    model::CalendarViewMode,
+    model::{CalendarViewMode, EventListPosition},
     text::{Language, LanguageMode},
 };
 
@@ -183,6 +182,8 @@ impl Planner {
                             ui.close();
                         }
                         ui.separator();
+                        self.event_list_position_menu(ui);
+                        ui.separator();
                         self.language_menu(ui);
                         self.file_menu(ui);
                         ui.separator();
@@ -201,6 +202,27 @@ impl Planner {
                 .response
         })
         .inner
+    }
+
+    fn event_list_position_menu(&mut self, ui: &mut egui::Ui) {
+        let language = self.language();
+        ui.menu_button(
+            language.text("Список событий", "Event list"),
+            |ui| {
+                for (position, label) in [
+                    (EventListPosition::Left, language.text("Слева", "Left")),
+                    (EventListPosition::Right, language.text("Справа", "Right")),
+                ] {
+                    if ui
+                        .radio(self.document.event_list_position == position, label)
+                        .clicked()
+                    {
+                        self.change_event_list_position(position);
+                        ui.close();
+                    }
+                }
+            },
+        );
     }
 
     fn language_menu(&mut self, ui: &mut egui::Ui) {
@@ -297,17 +319,36 @@ impl Planner {
             .frame(appearance::panel_frame(ui, config::FOOTER_MARGIN))
             .show(ui, |ui| self.footer(ui));
         let search_overlay = self.search.open && ui.available_width() < 1050.0;
-        if self.sidebar_visible && !search_overlay {
+        let event_list_position = if self.sidebar_visible && !search_overlay {
+            // При двух боковых панелях оставляем место календарю и событиям.
+            let sidebar_width = if self.document.event_list_position == EventListPosition::Right
+                || self.search.open
+            {
+                config::SIDEBAR_WIDTH.min(ui.available_width().max(0.0) / 3.0)
+            } else {
+                config::SIDEBAR_WIDTH
+            };
             egui::Panel::left("sidebar")
-                .exact_size(if self.search.open {
-                    SIDEBAR_WIDTH
-                } else {
-                    config::SIDEBAR_WIDTH
-                })
+                .exact_size(sidebar_width)
                 .resizable(false)
                 .show_separator_line(false)
                 .frame(appearance::panel_frame(ui, config::SIDEBAR_MARGIN))
-                .show(ui, |ui| self.sidebar(ui));
+                .show(ui, |ui| self.sidebar(ui))
+                .inner
+        } else {
+            EventListPosition::Right
+        };
+        if event_list_position == EventListPosition::Right {
+            let max_width = config::EVENTS_WIDTH_RANGE
+                .end()
+                .min(ui.available_width().max(0.0) / 2.0);
+            let min_width = config::EVENTS_WIDTH_RANGE.start().min(max_width);
+            egui::Panel::right("events")
+                .default_size(config::EVENTS_DEFAULT_WIDTH)
+                .size_range(min_width..=max_width)
+                .resizable(true)
+                .frame(appearance::panel_frame(ui, config::SIDEBAR_MARGIN))
+                .show(ui, |ui| self.events_panel(ui));
         }
         egui::CentralPanel::default()
             .frame(appearance::panel_frame(ui, grid::GRID_MARGIN))

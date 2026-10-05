@@ -4,8 +4,8 @@ use super::Planner;
 
 pub use crate::model::{
     Availability, CalendarViewMode, CategoryId, DateRange, DisplayTimeZone, Document, Event,
-    EventDetails, EventId, EventIdentity, EventSchedule, EventUid, Frequency, InputError,
-    Recurrence, Title, Year,
+    EventDetails, EventId, EventIdentity, EventListPosition, EventSchedule, EventUid, Frequency,
+    InputError, Recurrence, Title, Year,
 };
 pub use crate::text::{Language, LanguageMode};
 pub use crate::vacation::Estimate as VacationEstimate;

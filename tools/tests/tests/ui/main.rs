@@ -1,12 +1,13 @@
 use egui::{Key, Modifiers, accesskit::Role};
 use egui_kittest::{Node, kittest::Queryable as _};
 use planner::testing::{
-    self, AUTHORS, CalendarViewMode, Document, EventSchedule, HOLIDAYS_VERSION, InputError,
-    Language, REPOSITORY, Title, VERSION,
+    self, AUTHORS, CalendarViewMode, Document, EventListPosition, EventSchedule, HOLIDAYS_VERSION,
+    InputError, Language, REPOSITORY, Title, VERSION,
 };
 use planner_test_support::{AppHarness, document, event, harness, range, state};
 
 mod dialogs;
+mod events;
 mod grid;
 mod help;
 mod search;

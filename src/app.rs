@@ -17,6 +17,7 @@ use ui_config::style::{BLUE, RED};
 
 mod appearance;
 mod dialogs;
+mod events;
 mod files;
 mod grid;
 mod icons;

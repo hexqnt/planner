@@ -128,6 +128,12 @@ pub(super) mod layout {
     /// Ширина боковой панели.
     pub const SIDEBAR_WIDTH: f32 = 360.0;
 
+    /// Начальная ширина отдельного списка событий.
+    pub const EVENTS_DEFAULT_WIDTH: f32 = 360.0;
+
+    /// Минимальная и максимальная ширина отдельного списка событий.
+    pub const EVENTS_WIDTH_RANGE: std::ops::RangeInclusive<f32> = 280.0..=600.0;
+
     /// Внутренние отступы боковой панели.
     pub const SIDEBAR_MARGIN: Margin = Margin::symmetric(18, 10);
 

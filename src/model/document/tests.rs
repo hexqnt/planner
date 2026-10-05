@@ -57,6 +57,7 @@ fn document_fields_round_trip() {
     for view_mode in [CalendarViewMode::SingleYear, CalendarViewMode::Continuous] {
         let mut document = populated_document();
         document.view_mode = view_mode;
+        document.event_list_position = EventListPosition::Right;
         document.region = Region::Naive;
         document.language = Language::English;
         document.dark = true;
@@ -98,6 +99,7 @@ fn examples_have_unique_ids_and_valid_category_references() {
 fn legacy_documents_default_each_missing_display_setting() {
     let mut document = document();
     document.view_mode = CalendarViewMode::Continuous;
+    document.event_list_position = EventListPosition::Right;
     document.display_timezone = DisplayTimeZone::Named(chrono_tz::Europe::Moscow);
     document
         .recent_timezones
@@ -105,6 +107,10 @@ fn legacy_documents_default_each_missing_display_setting() {
     let value = serde_json::to_value(&document).unwrap();
     for (field, default) in [
         ("view_mode", serde_json::json!(CalendarViewMode::SingleYear)),
+        (
+            "event_list_position",
+            serde_json::json!(EventListPosition::Left),
+        ),
         (
             "display_timezone",
             serde_json::json!(DisplayTimeZone::System),
@@ -183,6 +189,11 @@ fn all_deserialization_paths_reject_invalid_documents_for_the_expected_reason() 
         ),
         (
             "/view_mode",
+            serde_json::json!("unknown"),
+            "unknown variant",
+        ),
+        (
+            "/event_list_position",
             serde_json::json!("unknown"),
             "unknown variant",
         ),

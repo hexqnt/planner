@@ -45,12 +45,21 @@ pub enum CalendarViewMode {
     Continuous,
 }
 
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum EventListPosition {
+    #[default]
+    Left,
+    Right,
+}
+
 #[derive(Serialize, Deserialize)]
 #[serde(try_from = "DocumentInput")]
 pub struct Document {
     pub version: u8,
     pub year: Year,
     pub view_mode: CalendarViewMode,
+    pub event_list_position: EventListPosition,
     pub display_timezone: DisplayTimeZone,
     pub recent_timezones: RecentTimeZones,
     pub last_event_category: Option<CategoryId>,
@@ -239,6 +248,7 @@ impl Default for Document {
             version: 1,
             year: Year::current(),
             view_mode: CalendarViewMode::default(),
+            event_list_position: EventListPosition::default(),
             display_timezone: DisplayTimeZone::default(),
             recent_timezones: RecentTimeZones::default(),
             last_event_category: None,
@@ -331,6 +341,7 @@ impl TryFrom<DocumentInput> for Document {
             version: document.version,
             year: document.year,
             view_mode: document.view_mode,
+            event_list_position: document.event_list_position,
             display_timezone: document.display_timezone,
             recent_timezones: document.recent_timezones,
             last_event_category: document
@@ -354,6 +365,8 @@ struct DocumentInput {
     year: Year,
     #[serde(default)]
     view_mode: CalendarViewMode,
+    #[serde(default)]
+    event_list_position: EventListPosition,
     #[serde(default)]
     display_timezone: DisplayTimeZone,
     #[serde(default)]
